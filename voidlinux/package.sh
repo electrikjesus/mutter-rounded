@@ -42,8 +42,10 @@ pkgver=$(rpm -q ./mutter*rpm|cut -d '-' -f 2)
 
 # 2. generate patch for build
 run tar -xvf ${topdir}/SOURCES/mutter-${pkgver}.tar.xz
-run wget -nc ${blur_effect_url}/${pkgver}/src/shell-blur-effect.c
-run wget -nc ${blur_effect_url}/${pkgver}/src/shell-blur-effect.h
+#run wget -nc ${blur_effect_url}/${pkgver}/src/shell-blur-effect.c
+#run wget -nc ${blur_effect_url}/${pkgver}/src/shell-blur-effect.h
+run wget -nc ${blur_effect_url}/40.5/src/shell-blur-effect.c
+run wget -nc ${blur_effect_url}/40.5/src/shell-blur-effect.h
 
 run cd mutter-${pkgver}
 run git init
