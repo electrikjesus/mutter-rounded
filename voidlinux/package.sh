@@ -16,8 +16,6 @@ if [ "$(whoami)" = "root" ]; then
   SUDO=""
 fi
 
-topdir=~/rpmbuild
-
 . $tool
 cd "${dir}"
 mkdir -p workspace
@@ -27,10 +25,10 @@ export LANG=en_US.UTF-8
 
 # 0. Backup and setup
 run ${SUDO} xbps-install -Su
-run ${SUDO} cp /usr/bin/mutter /usr/bin/mutter-original
+run ${SUDO} cp /usr/bin/mutter /usr/bin/nutter-original
 
-# 1. Download the source (TODO)
-run rm -rf mutter*
+# 1. Download the source (TODO) [Original mutter source? dependencies?]
+run rm -rf /usr/bin/mutter*
 run ${SUDO} dnf download mutter --source
 run ${SUDO} dnf builddep mutter
 run ${SUDO} dnf install fedora-packager
