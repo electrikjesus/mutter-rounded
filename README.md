@@ -29,7 +29,7 @@ yay -S mutter-rounded
 
 ## Ubuntu 21.10
 
-There is a simple script to help you build the packages in ubuntu 21.10. It's neccesary to check the content of script. Before you build the packages, the `Source code` checkbox in `Software & Updates` should be enabled:
+There is a simple script to help you build the packages in Ubuntu 21.10. It's neccesary to check the content of script. Before you build the packages, the `Source code` checkbox in `Software & Updates` should be enabled:
 
 ![](screenshots/ubuntu_settings.png)
 
@@ -44,13 +44,14 @@ sudo dpkg -i *.deb
 
 There are pre-build packages which built by [@gregor160300](https://github.com/gregor160300), you can download packages from [https://gregor160300.stackstorage.com/s/I4YFXu82ay6mNE0C/en_US](https://gregor160300.stackstorage.com/s/I4YFXu82ay6mNE0C/en_US).
 
-Alternatively, you can build packages by yourself with scripts in `fedora_35` folder. It's neccesary to check the contents in scripts before you run it.
+Alternatively, you can build packages by yourself with scripts in `fedora_35` or `fedora_rawhide` folder. It's neccesary to check the contents in scripts before you run it.
 
 ```bash
 git clone https://github.com/yilozt/mutter-rounded
 # For Fedora 35
 cd ./mutter-rounded/fedora_35
 # For Fedora 36 (Rawhide)
+cd ./mutter-rounded/fedora_rawhide
 ./package.sh
 ```
 
