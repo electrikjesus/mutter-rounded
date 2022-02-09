@@ -1,0 +1,9 @@
+[Unit]
+Description="Monitor the /usr/share/mutter-8 file for changes"
+
+[Path]
+PathModified=/usr/share/mutter-8
+Unit=mutter-rounded-mon.service
+
+[Install]
+WantedBy=multi-user.target

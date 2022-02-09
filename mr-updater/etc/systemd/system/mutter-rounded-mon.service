@@ -1,0 +1,5 @@
+[Unit] 
+Description="Run script to update mutter-rounded when mutter is updated"
+
+[Service]
+ExecStart=/usr/local/bin/trigger-update.sh
