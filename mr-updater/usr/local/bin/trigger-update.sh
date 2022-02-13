@@ -34,7 +34,7 @@ if test -f "$PACKAGESCRIPT"; then
 else
 	mkdir -p $MRROOT
 	cd $MRROOT
-	git clone https://github.com/yilozt/mutter-rounded mutter-rounded
+	git clone https://github.com/electrikjesus/mutter-rounded mutter-rounded
 	cd $PACKAGEPATH
 fi
 
