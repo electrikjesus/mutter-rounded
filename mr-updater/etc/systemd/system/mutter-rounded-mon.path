@@ -1,8 +1,8 @@
 [Unit]
-Description="Monitor the /usr/share/mutter-8 file for changes"
+Description="Monitor the /usr/bin/mutter file for changes"
 
 [Path]
-PathModified=/usr/share/mutter-8
+PathModified=/usr/bin/mutter
 Unit=mutter-rounded-mon.service
 
 [Install]

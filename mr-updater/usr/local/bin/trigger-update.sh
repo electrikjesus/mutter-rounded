@@ -1,6 +1,6 @@
 #!/bin/bash
 
-HPATH=$HOME
+HPATH="$(eval echo "~$USER")"
 MRROOT=$HPATH/.cache/mutter-rounded
 MRPATH=$HPATH/.cache/mutter-rounded/mutter-rounded
 TOOLPATH=$HPATH/.cache/mutter-rounded/mutter-rounded/tool
@@ -42,7 +42,7 @@ if [ -d $MRPATH ]; then
 cd $PACKAGEPATH
 ./package.sh
 echo "mutter-rounded is compiled. Now installing..."
-sudo dpkg -i *.deb
+sudo dpkg -i $PACKAGEPATH/*.deb
 cd $HPATH
 
 echo "All set. Thanks for installing."
