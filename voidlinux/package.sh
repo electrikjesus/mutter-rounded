@@ -9,6 +9,7 @@ blur_effect_url="https://gitlab.gnome.org/GNOME/gnome-shell/-/raw"
 # Get the absolute path where this script locate
 dir="$(cd $(dirname $0); pwd)"
 aur="${dir}/../aur"
+ubnt="${dir}/../ubuntu_21.10"
 tool="$dir/../tool"
 SUDO="sudo"
 #SUDO="doas"
@@ -58,6 +59,7 @@ run cp ../*.[ch] ./src
 run cp "${aur}"/*.[ch] ./src
 run patch -p1 < "${aur}"/rounded_corners_40.5.patch
 run patch -p1 < "${aur}"/shell_blur_effect_40.5.patch
+run patch -p1 < "${ubnt}"/colors.diff
 run git add **.[ch]
 run git add **.in
 run git add src/meson.build
