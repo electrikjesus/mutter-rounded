@@ -7,8 +7,22 @@ TOOLPATH=$HPATH/.cache/mutter-rounded/mutter-rounded/tool
 PACKAGEPATH=$HPATH/.cache/mutter-rounded/mutter-rounded/ubuntu_21.10
 PACKAGESCRIPT=$HPATH/.cache/mutter-rounded/mutter-rounded/ubuntu_21.10/package.sh
 
+notify_all() {
+    local title=$1
+    local msg=$2
+
+    who | awk '{print $1, $NF}' | tr -d "()" |
+    while read u d; do
+        id=$(id -u $u)
+        . /run/user/$id/dbus-session
+        export DBUS_SESSION_BUS_ADDRESS
+        export DISPLAY=$d
+        su $u -c "/usr/bin/notify-send '$title' '$msg' --icon=dialog-information"
+    done 
+}
+
 # Send notice that update has started. 
-notify-send 'mr-updater' 'mutter-rounded update has started. We will let you know when it is complete.' --icon=dialog-information
+notify_all 'mr-updater' 'mutter-rounded update has started. We will let you know when it is complete.' 
 
 CLEANUP="true"
 if [ -f $TOOLPATH ]; then
@@ -51,10 +65,10 @@ cd $HPATH
 echo "All set. Thanks for installing."
 
 # Send notice that update has finished. 
-notify-send 'mr-updater' 'mutter-rounded has been updated. Please restart before results can be used.' --icon=dialog-information
+notify_all 'mr-updater' 'mutter-rounded has been updated. Please restart before results can be used.'
 
 else
 echo "There was an issue. Not installed"
 # Send notice that update has finished. 
-notify-send 'mr-updater' 'mutter-rounded had an issue and was not updated. Please use the "trigger-update.sh command from terminal to find out why".' --icon=dialog-information
+notify_all 'mr-updater' 'mutter-rounded had an issue and was not updated. Please use the "trigger-update.sh command from terminal to find out why".' 
 fi
