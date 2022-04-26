@@ -4,8 +4,8 @@ HPATH="$(eval echo "~$USER")"
 MRROOT=$HPATH/.cache/mutter-rounded
 MRPATH=$HPATH/.cache/mutter-rounded/mutter-rounded
 TOOLPATH=$HPATH/.cache/mutter-rounded/mutter-rounded/tool
-PACKAGEPATH=$HPATH/.cache/mutter-rounded/mutter-rounded/ubuntu_21.10
-PACKAGESCRIPT=$HPATH/.cache/mutter-rounded/mutter-rounded/ubuntu_21.10/package.sh
+PACKAGEPATH=$HPATH/.cache/mutter-rounded/mutter-rounded/ubuntu
+PACKAGESCRIPT=$HPATH/.cache/mutter-rounded/mutter-rounded/ubuntu/package.sh
 
 notify_all() {
     local title=$1
