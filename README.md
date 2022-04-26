@@ -27,20 +27,39 @@ install `mutter-rounded` by AUR helper:
 yay -S mutter-rounded
 ```
 
-## Ubuntu 21.10
+### Uninstall
 
-There is a simple script to help you build the packages in Ubuntu 21.10. It's neccesary to check the content of script. Before you build the packages, the `Source code` checkbox in `Software & Updates` should be enabled:
+## Ubuntu 21.10 / Ubuntu 22.04
+
+There is a simple script to help you build the packages in ubuntu 21.10. It's neccesary to check the content of script. Before you build the packages, the `Source code` checkbox in `Software & Updates` should be enabled:
 
 ![](screenshots/ubuntu_settings.png)
 
 ```bash
 git clone https://github.com/yilozt/mutter-rounded
-cd ./mutter-rounded/ubuntu_21.10
+cd ./mutter-rounded/ubuntu
 ./package.sh
-sudo dpkg -i *.deb
+
+# Ubuntu 21.10
+sudo dpkg -i libmutter-8-0*.deb mutter-common*.deb
+
+# Ubuntu 22.04
+sudo dpkg -i libmutter-10-0*.deb mutter-common*.deb
 ```
 
-## Fedora 35 and Rawhide
+### Uninstall
+
+Install `libmutter-8-0` and `mutter-common` from official repo:
+
+```bash
+# Ubuntu 21.10
+sudo apt install libmutter-8-0 mutter-common
+
+# Ubuntu 22.04
+sudo apt install libmutter-10-0 mutter-common
+```
+
+## Fedora 35 / Fedora 36
 
 There are pre-build packages which built by [@gregor160300](https://github.com/gregor160300), you can download packages from [https://gregor160300.stackstorage.com/s/I4YFXu82ay6mNE0C/en_US](https://gregor160300.stackstorage.com/s/I4YFXu82ay6mNE0C/en_US).
 
@@ -48,10 +67,7 @@ Alternatively, you can build packages by yourself with scripts in `fedora_35` or
 
 ```bash
 git clone https://github.com/yilozt/mutter-rounded
-# For Fedora 35
-cd ./mutter-rounded/fedora_35
-# For Fedora 36 (Rawhide)
-cd ./mutter-rounded/fedora_rawhide
+cd ./mutter-rounded/fedora
 ./package.sh
 ```
 
@@ -60,12 +76,19 @@ After scripts finish, the rpm packages will be found in `~/rpmbuild/RPMS/x86_64/
 ```
 cd ~/rpmbuild/RPMS/x86_64/
 sudo dnf upgrade mutter
-sudo rpm --reinstall mutter-<used version>.rpm
+sudo rpm --reinstall mutter-41.*
+```
+
+### Uninstall
+
+```
+sudo dnf reinstall mutter
 ```
 
 # Screenshots
 
 ![](screenshots/screenshots1.jpg)
+![](screenshots/screenshots0.jpg)
 
 # Settings
 
