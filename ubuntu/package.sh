@@ -45,12 +45,13 @@ run ${SUDO} apt install -y gnupg pbuilder ubuntu-dev-tools apt-file
 run ${SUDO} apt build-dep -y mutter
 
 # download the source code
-run rm -rf mutter-*
-run pull-lp-source mutter ${code_name}
+run rm -rf mutter-* shell-blur-effect*
+apt -y --download-only source mutter
+dpkg-source -x *.dsc
 ver=$(ls mutter-* -d |cut -d '-' -f 2)
 
-run wget -nc ${blur_effect_url}/${ver}/src/shell-blur-effect.c
-run wget -nc ${blur_effect_url}/${ver}/src/shell-blur-effect.h
+run wget ${blur_effect_url}/${ver}/src/shell-blur-effect.c
+run wget ${blur_effect_url}/${ver}/src/shell-blur-effect.h
 
 # apply patches
 run cp shell*.[ch] mutter-${ver}/src
@@ -72,4 +73,4 @@ run _ignore_ debuild
 run cd ../
 run mv *.deb ../
 
-green "build finish, you can find packages at: $dir \n"
+echo $(green "build finish, you can find packages at:$dir" )

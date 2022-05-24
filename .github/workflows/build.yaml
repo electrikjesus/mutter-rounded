@@ -1,0 +1,122 @@
+name: Build Packages
+
+on:
+  push:
+    paths-ignore:
+      - screenshots
+      - README.md
+      - LICENSE
+  schedule:
+    - cron: '0 0 * * 6'
+
+env:
+  IN_GITHUB_ACTION: TRUE
+
+jobs:
+  build-in-ubuntu:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        distro: ['Pop!_OS', 'Ubuntu']
+        version: ['21.10', '22.04']
+    container: ubuntu:${{ matrix.version }}
+    name: ${{ matrix.distro }} ${{ matrix.version }}
+    env:
+      DEBIAN_FRONTEND: noninteractive
+      LANG: en_US.UTF-8
+      DEB_BUILD_OPTIONS: nocheck
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup enviroment
+        shell: bash
+        run: |
+          codename=$(. /etc/os-release; echo $VERSION_CODENAME)
+          if [[ '${{ matrix.distro }}' == 'Pop!_OS' ]]; then
+            echo '::group::Add Pop!_Os APT Repository'
+            apt update
+            apt install -y gnupg software-properties-common
+            apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 63C46DF0140D738961429F4E204DD8AEC33A7AFF
+            sed -i -e "1ideb http://apt.pop-os.org/release $codename main" /etc/apt/sources.list
+            sed -i -e "1ideb-src http://apt.pop-os.org/release $codename main" /etc/apt/sources.list
+            echo '::endgroup::'
+          fi
+
+          echo '::group::Install wget locales lsb-core'
+          apt update
+          apt install -y wget locales lsb-core
+          echo '::endgroup::'
+
+          echo '::group::Setup locale'
+          rm -rf /var/lib/apt/lists/*
+          localedef -i en_US -c -f UTF-8 -A /usr/share/locale/locale.alias en_US.UTF-8
+          echo '::endgroup::'
+
+      - name: Build packages
+        id: build
+        run: |
+          cd ./ubuntu
+          ./package.sh
+          echo "::set-output name=pkgver::$(ls mutter-common*|cut -d '_' -f 2)"
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: "[${{ matrix.distro }} ${{ matrix.version }}][${{ steps.build.outputs.pkgver }}]"
+          path: |
+            ubuntu/mutter-common*.deb
+            ubuntu/libmutter-*-0*.deb
+
+      - name: Install packages
+        run: |
+          echo '::group::Upgrade system before install'
+          apt upgrade -y
+          echo '::endgroup::'
+          echo '::group::Install mutter'
+          dpkg -i ubuntu/*.deb
+          echo '::endgroup::'
+
+  build-in-fedora:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        version: ['35', '36']
+    container: fedora:${{ matrix.version }}
+    name: Fedora ${{ matrix.version }}
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup enviroment
+        run: |
+          echo '::group::Install wget dnf-command(download)'
+          dnf -y update
+          dnf -y install 'dnf-command(download)' wget
+          echo '::endgroup::'
+
+      - name: Build packages
+        id: build
+        run: |
+          ./fedora/package.sh
+          cd ~/rpmbuild/RPMS/x86_64/
+          echo "::set-output name=pkgver::$(ls mutter-[0-9]*)"
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: "[Fedora ${{ matrix.version }}][${{ steps.build.outputs.pkgver }}]"
+          path: |
+            ~/rpmbuild/RPMS/x86_64/mutter-[0-9]*
+
+      - name: Install packages
+        run: |
+          echo '::group::Install original packages'
+          cd ~/rpmbuild/RPMS/x86_64/
+          dnf -y install mutter
+          echo '::endgroup::'
+          echo '::group::Install patched packages'
+          rpm --reinstall mutter-*
+          echo '::endgroup::'
